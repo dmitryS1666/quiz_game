@@ -1,0 +1,168 @@
+[
+  {
+    "question": "What is the capital of France?",
+    "answers": ["Paris", "Berlin", "Madrid", "Rome"],
+    "correct": 0
+  },
+  {
+    "question": "Who wrote '1984'?",
+    "answers": ["George Orwell", "Aldous Huxley", "Mark Twain", "J.K. Rowling"],
+    "correct": 0
+  },
+  {
+    "question": "Which planet is known as the Red Planet?",
+    "answers": ["Mars", "Venus", "Jupiter", "Saturn"],
+    "correct": 0
+  },
+  {
+    "question": "What is the chemical symbol for water?",
+    "answers": ["H2O", "CO2", "NaCl", "O2"],
+    "correct": 0
+  },
+  {
+    "question": "Who painted the Mona Lisa?",
+    "answers": ["Leonardo da Vinci", "Vincent van Gogh", "Pablo Picasso", "Claude Monet"],
+    "correct": 0
+  },
+  {
+    "question": "Which element has the atomic number 1?",
+    "answers": ["Hydrogen", "Oxygen", "Carbon", "Helium"],
+    "correct": 0
+  },
+  {
+    "question": "What is the tallest mountain in the world?",
+    "answers": ["Mount Everest", "K2", "Kangchenjunga", "Makalu"],
+    "correct": 0
+  },
+  {
+    "question": "Who is known as the Father of Computers?",
+    "answers": ["Charles Babbage", "Alan Turing", "Bill Gates", "Steve Jobs"],
+    "correct": 0
+  },
+  {
+    "question": "What is the capital of Japan?",
+    "answers": ["Tokyo", "Beijing", "Seoul", "Bangkok"],
+    "correct": 0
+  },
+  {
+    "question": "Which ocean is the largest?",
+    "answers": ["Pacific Ocean", "Atlantic Ocean", "Indian Ocean", "Arctic Ocean"],
+    "correct": 0
+  },
+  {
+    "question": "Which country gifted the Statue of Liberty to the USA?",
+    "answers": ["France", "Germany", "Italy", "Spain"],
+    "correct": 0
+  },
+  {
+    "question": "What is the hardest natural substance on Earth?",
+    "answers": ["Diamond", "Gold", "Iron", "Granite"],
+    "correct": 0
+  },
+  {
+    "question": "Who discovered penicillin?",
+    "answers": ["Alexander Fleming", "Marie Curie", "Louis Pasteur", "Isaac Newton"],
+    "correct": 0
+  },
+  {
+    "question": "In which year did World War II end?",
+    "answers": ["1945", "1939", "1950", "1941"],
+    "correct": 0
+  },
+  {
+    "question": "Which gas do plants absorb from the atmosphere?",
+    "answers": ["Carbon dioxide", "Oxygen", "Nitrogen", "Hydrogen"],
+    "correct": 0
+  },
+  {
+    "question": "What is the capital of Canada?",
+    "answers": ["Ottawa", "Toronto", "Vancouver", "Montreal"],
+    "correct": 0
+  },
+  {
+    "question": "Who invented the telephone?",
+    "answers": ["Alexander Graham Bell", "Thomas Edison", "Nikola Tesla", "Guglielmo Marconi"],
+    "correct": 0
+  },
+  {
+    "question": "Which country is the largest by land area?",
+    "answers": ["Russia", "Canada", "China", "United States"],
+    "correct": 0
+  },
+  {
+    "question": "What is the smallest unit of life?",
+    "answers": ["Cell", "Atom", "Molecule", "Tissue"],
+    "correct": 0
+  },
+  {
+    "question": "Who wrote 'Hamlet'?",
+    "answers": ["William Shakespeare", "Charles Dickens", "Homer", "Mark Twain"],
+    "correct": 0
+  },
+  {
+    "question": "Which is the largest desert in the world?",
+    "answers": ["Sahara", "Arabian", "Gobi", "Kalahari"],
+    "correct": 0
+  },
+  {
+    "question": "What is the speed of light?",
+    "answers": ["299,792,458 m/s", "150,000,000 m/s", "100,000,000 m/s", "1,000,000 m/s"],
+    "correct": 0
+  },
+  {
+    "question": "What is the currency of Japan?",
+    "answers": ["Yen", "Won", "Dollar", "Euro"],
+    "correct": 0
+  },
+  {
+    "question": "Who developed the theory of relativity?",
+    "answers": ["Albert Einstein", "Isaac Newton", "Niels Bohr", "Galileo Galilei"],
+    "correct": 0
+  },
+  {
+    "question": "Which is the longest river in the world?",
+    "answers": ["Nile", "Amazon", "Yangtze", "Mississippi"],
+    "correct": 0
+  },
+  {
+    "question": "Who was the first man to walk on the moon?",
+    "answers": ["Neil Armstrong", "Buzz Aldrin", "Yuri Gagarin", "John Glenn"],
+    "correct": 0
+  },
+  {
+    "question": "Which is the largest mammal?",
+    "answers": ["Blue Whale", "Elephant", "Giraffe", "Hippopotamus"],
+    "correct": 0
+  },
+  {
+    "question": "What is the capital of Italy?",
+    "answers": ["Rome", "Florence", "Venice", "Milan"],
+    "correct": 0
+  },
+  {
+    "question": "Which country is known as the Land of the Rising Sun?",
+    "answers": ["Japan", "China", "India", "Thailand"],
+    "correct": 0
+  },
+  {
+    "question": "What is the main ingredient in guacamole?",
+    "answers": ["Avocado", "Tomato", "Onion", "Garlic"],
+    "correct": 0
+  },
+  {
+    "question": "What is the square root of 64?",
+    "answers": ["8", "6", "7", "9"],
+    "correct": 0
+  },
+  {
+    "question": "Who directed the movie 'Titanic'?",
+    "answers": ["James Cameron", "Steven Spielberg", "Christopher Nolan", "Quentin Tarantino"],
+    "correct": 0
+  },
+  {
+    "question": "What is the largest bone in the human body?",
+    "answers": ["Femur", "Tibia", "Humerus", "Skull"],
+    "correct": 0
+  }
+]
+

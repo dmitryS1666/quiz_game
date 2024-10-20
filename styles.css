@@ -1,0 +1,760 @@
+@font-face {
+    font-family: Lao MN;
+    src: url(../res/font/lao-mn.ttf);
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    position: relative;
+    background: url(../res/bg.png) no-repeat center center fixed;
+    background-size: cover;
+
+    font-family: "Lao MN", serif;
+}
+
+.hidden {
+    display: none;
+}
+
+/*------------ PRELOADER ----------------*/
+#preloaderPage {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    height: 101vh;
+
+    background: url(../res/bg.png) no-repeat center center fixed;
+}
+
+#character {
+    position: absolute;
+    bottom: 0;
+}
+
+#character img {
+    width: 100%;
+}
+
+#preloader {
+    position: fixed;
+    bottom: 10%;
+    height: 19px;
+    width: 60%;
+    border: 5px solid #fb7e52;
+    border-radius: 20px;
+    overflow: hidden;
+    background-color: rgb(255, 255, 255);
+    margin: auto;
+    transform: translateX(30%);
+    background: gradient(linear, 0% 0%, 0% 100%, from(rgb(255, 255, 255)), to(#f99359));
+    background: -o-gradient(linear, 0% 0%, 0% 100%, from(rgb(255, 255, 255)), to(#f99359));
+    background: -ms-gradient(linear, 0% 0%, 0% 100%, from(rgb(255, 255, 255)), to(#f99359));
+    /* background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(255, 255, 255)), to(rgb(0, 0, 0))); */
+    background: -moz-gradient(linear, 0% 0%, 0% 100%, from(rgb(255, 255, 255)), to(#f99359));
+    background: linear-gradient(top, rgb(255, 255, 255), #f99359);
+    background: -o-linear-gradient(top, rgb(255, 255, 255), #f99359);
+    background: -ms-linear-gradient(top, rgb(255, 255, 255), #f99359);
+    background: -webkit-linear-gradient(top, rgb(255, 255, 255), #f99359);
+    background: -moz-linear-gradient(top, rgb(255, 255, 255), #f99359);
+}
+
+.preloaderBarLineG {
+    background-color: #faad7d;
+    float: left;
+    width: 14px;
+    height: 117px;
+    margin-right: 23px;
+    margin-top: -27px;
+    transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+}
+
+.preloaderAnimationG {
+    width: 380px;
+    animation-name: preloaderAnimationG;
+    -o-animation-name: preloaderAnimationG;
+    -ms-animation-name: preloaderAnimationG;
+    -webkit-animation-name: preloaderAnimationG;
+    -moz-animation-name: preloaderAnimationG;
+    animation-duration: 1.5s;
+    -o-animation-duration: 1.5s;
+    -ms-animation-duration: 1.5s;
+    -webkit-animation-duration: 1.5s;
+    -moz-animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    -o-animation-iteration-count: infinite;
+    -ms-animation-iteration-count: infinite;
+    -webkit-animation-iteration-count: infinite;
+    -moz-animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    -o-animation-timing-function: linear;
+    -ms-animation-timing-function: linear;
+    -webkit-animation-timing-function: linear;
+    -moz-animation-timing-function: linear;
+}
+
+@keyframes preloaderAnimationG {
+    0% {
+        margin-left: 0;
+    }
+
+    100% {
+        margin-left: -37px;
+    }
+}
+
+@-o-keyframes preloaderAnimationG {
+    0% {
+        margin-left: 0;
+    }
+
+    100% {
+        margin-left: -37px;
+    }
+}
+
+@-ms-keyframes preloaderAnimationG {
+    0% {
+        margin-left: 0;
+    }
+
+    100% {
+        margin-left: -37px;
+    }
+}
+
+@-webkit-keyframes preloaderAnimationG {
+    0% {
+        margin-left: 0;
+    }
+
+    100% {
+        margin-left: -37px;
+    }
+}
+
+@-moz-keyframes preloaderAnimationG {
+    0% {
+        margin-left: 0;
+    }
+
+    100% {
+        margin-left: -37px;
+    }
+}
+
+/*------------ PRELOADER ----------------*/
+
+/*---------------WIN + FAIL--------------*/
+#winPage, #failPage {
+    width: 100%;
+    text-align: center;
+    padding-top: 30%;
+}
+
+#winPage .title,
+#failPage .title {
+    background: url(../res/win_bg.png) no-repeat center center;
+    background-size: contain;
+    width: 95%;
+    height: 95px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 25pt;
+    color: white;
+    padding-top: 15px;
+    float: left;
+}
+
+#failPage .title {
+    background: url(../res/lost_bg.png) no-repeat center center;
+    background-size: contain;
+}
+
+#winPage .score,
+#failPage .score {
+    background: url(../res/result_bg.png) no-repeat center center;
+    width: 100%;
+    height: 330px;
+    float: left;
+    text-align: center;
+    margin-top: 65px;
+}
+
+#winPage .score .scoreText,
+#failPage .score .scoreText {
+    font-weight: 400;
+    color: black;
+    font-size: 30pt;
+    margin-top: 70px;
+}
+
+#winPage .score .scoreValue {
+    font-weight: 600;
+    color: black;
+    font-size: 55pt;
+    margin-top: -50px;
+    padding-left: 40px;
+}
+
+#winPage .score .scoreValue img {
+    vertical-align: middle;
+}
+
+#winPage .btn button,
+#failPage .btn button {
+    width: 70%;
+    background: url(../res/continue_button.png) no-repeat center center;
+    height: 105px;
+    background-size: contain;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    border: none;
+    bottom: -550px;
+}
+
+/*---------------WIN + FAIL--------------*/
+
+/*-----------------CANVA + SETTING-----------------*/
+.canva {
+    width: 80%;
+    height: 55vh;
+    border: 2px solid #fd3a99;
+    border-radius: 5px;
+    position: absolute;
+    transform: translateX(-50%);
+    left: 50%;
+    margin-top: 15%;
+}
+
+.canva .title {
+    width: 100%;
+    height: 50px;
+    background: #f9659b;
+    text-align: center;
+    position: absolute;
+    top: 0;
+}
+
+.canva .title p {
+    color: #474646;
+    font-size: 25px;
+    font-family: "Lao MN", serif;
+    transform: translateY(-50%);
+}
+
+.close_btn {
+    position: absolute;
+    right: -25px;
+    top: -15px;
+}
+
+.canva .body {
+    width: 100%;
+    height: 90%;
+    margin-top: 14%;
+}
+
+.canva .raw {
+    width: 100%;
+}
+
+.canva .raw label span {
+    color: white;
+    font-family: "Lao MN", serif;
+    font-size: 30px;
+    margin-left: 30px;
+}
+
+.canva .raw input {
+    display: none;
+}
+
+.canva .raw label span,
+.canva .raw label img {
+    float: left;
+}
+
+.checkbox-input {
+    display: none;
+}
+
+.checkbox-label {
+    cursor: pointer;
+    display: inline-block;
+}
+
+/* Состояние "off" по умолчанию */
+.checkbox-label img.on {
+    display: none;
+}
+
+.checkbox-label img {
+    width: 90px;
+    position: absolute;
+    right: 25px;
+}
+
+/* Когда чек-бокс выбран, показываем изображение "on" */
+.checkbox-input:checked + .checkbox-label img.off {
+    display: none;
+}
+
+.checkbox-input:checked + .checkbox-label img.on {
+    display: inline;
+}
+
+.canva .reset_button {
+    border: none;
+    background: none;
+    color: white;
+    text-decoration: underline;
+    font-family: "Lao MN", serif;
+    font-size: 23px;
+}
+
+.canva .ok_button {
+    border: none;
+    background: none;
+    position: absolute;
+    bottom: -25px;
+    left: 40%;
+    transform: translateX(-33%);
+}
+
+.canva .ok_button img{
+    width: 100%;
+}
+
+.canva .body .text {
+    text-align: center;
+    font-family: "Lao MN", serif;
+    font-weight: 600;
+    font-size: 20px;
+    color: #4d494b;
+    width: 80%;
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%);
+    padding-top: 20px;
+}
+
+.canva .body .heart {
+    width: 130px;
+    height: 65px;
+    margin-top: 225px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.canva .body .heart span{
+    position: absolute;
+    right: -5px;
+    top: 3px;
+    text-align: center;
+}
+
+.canva .body .chart {
+    height: 250px;
+    width: 80%;
+    margin: 100px auto auto;
+}
+
+.canva .body .chart .item {
+    height: 200px;
+    width: 45px;
+    background: rgba(249, 101, 155, 0.66);
+    float: left;
+    margin: 0 auto auto 15px;
+    text-align: center;
+}
+
+.canva .body .chartLegend {
+    height: 50px;
+    width: 100%;
+    float: left;
+}
+
+.canva .body .chart .chartLegend .itemLegend {
+    float: left;
+    width: 45px;
+    text-align: center;
+    margin-left: 15px;
+    font-weight: 400;
+}
+
+/*------------END CANVA + SETTING----------------*/
+
+/*-----------------QUESTION DAY------------------*/
+
+#questionDay {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 100vh;
+}
+
+#questionDay .title {
+    margin-top: 20%;
+}
+
+#questionDay .title,
+#questionDay .text {
+    text-align: center;
+    font-size: 35px;
+    color: #474646;
+}
+
+#questionDay .text {
+    font-size: 16px;
+    color: #171717;
+    margin-top: -30px;
+}
+
+#questionDay .questionBody {
+    width: 300px;
+    background: url(res/question_day_bg.png) no-repeat top;
+    background-size: contain;
+    height: 75vh;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 15px;
+}
+
+#questionDay .questionBody .question {
+    text-align: center;
+    font-size: 25px;
+    padding: 20px 0 0 0;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 85%;
+}
+
+#questionDay .questionBody .answers {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 180px;
+    width: 90%;
+    padding-top: 30px;
+}
+
+#questionDay .questionBody .item {
+    background-image: url(res/question_item_bg.png);
+    width: 80%;
+    height: 70px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin: 0 auto 30px;
+}
+
+#questionDay .questionBody .answers .item .text {
+    text-align: left;
+    padding-left: 25px;
+    padding-top: 15px;
+    font-size: 20px;
+
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/*-----------------END QUESTION DAY------------------*/
+
+/*-----------------------TIMER-----------------------*/
+#timer {
+    margin-top: 5%;
+    background: #fdfbce;
+    color: #d8856d;
+    font-weight: bold;
+    width: 80px;
+    border-radius: 50px;
+    height: 30px;
+    text-align: center;
+    left: 50%;
+    position: relative;
+    transform: translateX(-50%);
+}
+
+#timer span{
+    margin-top: 6px;
+    float: right;
+    padding-right: 10px;
+    font-size: 17px;
+}
+
+#timer img{
+    width: 20px;
+    margin-top: 2px;
+}
+/*----------------------END TIMER--------------------*/
+
+/*--------------------QUESTION GAME------------------*/
+
+#questionGame {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 100vh;
+}
+
+#questionGame .questionBody {
+    width: 300px;
+    background: url(res/question_day_bg.png) no-repeat top;
+    background-size: contain;
+    height: 75vh;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 15px;
+}
+
+#questionGame .questionBody .question {
+    text-align: center;
+    font-size: 25px;
+    padding: 30px 20px 0 20px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+}
+
+#questionGame .questionBody .answers {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 180px;
+    width: 90%;
+    padding-top: 5px;
+}
+
+#questionGame .questionBody .item {
+    background-image: url(res/question_item_bg.png);
+    width: 80%;
+    height: 70px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin: 0 auto 3px;
+}
+
+#questionGame .questionBody .answers .item .text {
+    text-align: left;
+    padding-left: 25px;
+    padding-top: 15px;
+    font-size: 22px;
+}
+
+#questionGame .questionBody .answers .closed {
+    visibility: hidden;
+}
+
+/*---------------END QUESTION GAME------------------*/
+
+/*------------------PROGRESS PAGE----------------------*/
+#progressPage {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+}
+
+#progressPage .levels {
+    width: 80%;
+    margin: 20% auto auto;
+}
+
+#progressPage .levels .item {
+    height: 40px;
+    border: 5px solid #fd4a98b8;
+    border-radius: 45px;
+    margin-bottom: 2%;
+    background: #ffffff82;
+    line-height: 40px;
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
+}
+
+#progressPage .levels .active {
+    background: #f9659b;
+}
+
+#progressPage .levels .done {
+    background: #e5e5e5;
+}
+
+#progressPage .levels .item .leven_num {
+    float: left;
+    padding-left: 30px;
+    font-weight: bold;
+    font-family: "Lao MN", serif;
+    font-size: 18px;
+}
+
+#progressPage .levels .item .point {
+    width: 40%;
+    float: right;
+}
+
+#progressPage .levels .item .point img {
+    width: 25%;
+    float: left;
+    padding-top: 5px;
+}
+
+#progressPage .levels .item .point p {
+    float: left;
+    margin: 0 0 0 15px;
+    font-family: "Lao MN", serif;
+    font-size: 18px;
+}
+
+#progressPage .text {
+    text-align: center;
+    color: #000000;
+    font-family: "Lao MN", serif;
+    font-weight: bold;
+    font-size: 22px;
+}
+
+/*----------------END PROGRESS PAGE--------------------*/
+
+/*----------------------SCORE--------------------------*/
+#score {
+    width: 100px;
+    height: 35px;
+    background: #cc5e4c;
+    border-radius: 25px;
+    margin-left: 25px;
+}
+
+#score img {
+    width: 43%;
+    /*width: 42px;*/
+    margin-top: -3px;
+    margin-left: -10px;
+}
+
+#score .scoreValue {
+    float: right;
+    text-align: center;
+    width: 65%;
+    font-size: 16px;
+    color: white;
+    line-height: 35px;
+}
+/*--------------------END SCORE------------------------*/
+
+/*-------------------CURRENT LEVEL---------------------*/
+#currentLevel {
+    border: 1px solid white;
+    outline: 3px solid #fe4a9b;
+    border-radius: 40px;
+    height: 30px;
+    margin-top: 3px;
+    width: 55px;
+    margin-left: 15px;
+    text-align: center;
+    line-height: 31px;
+    color: white;
+    background: #fb669c;
+}
+
+#currentLevel p {
+    padding: unset;
+    margin: unset;
+}
+/*-----------------END CURRENT LEVEL-------------------*/
+
+/*-----------------CONTAINER CONFIG--------------------*/
+.containerConfig {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    margin-top: 20px;
+    margin-right: 45px;
+}
+/*---------------END CONTAINER CONFIG------------------*/
+
+/*-----------------------HINTS-------------------------*/
+.hintGame {
+    width: 100%;
+    height: 80px;
+    text-align: center;
+    position: absolute;
+    top: 70vh;
+}
+
+#fiftyOnFifty, #call, #audience {
+    float: left;
+    height: 50px;
+    margin-top: 3px;
+    width: 25%;
+    margin-right: 3%;
+    margin-left: 4%;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+#fiftyOnFifty {
+    background-image: url(res/50_50_button.png);
+}
+
+#call {
+    background-image: url(res/reset_button.png);
+}
+
+#audience {
+    background-image: url(res/group_help_button.png);
+}
+
+#extraPoints {
+    width: 25px;
+    height: 25px;
+    background: #fd9433;
+    color: white;
+    line-height: 25px;
+    font-size: 15px;
+    border: 1px solid #ff9533;
+    border-radius: 50%;
+    float: right;
+    margin-top: -12px;
+}
+
+.hintGame .active {
+    opacity: 1;
+}
+
+.hintGame .block {
+    opacity: 0.5;
+}
+/*---------------------END HINTS-----------------------*/
+
+
+#answer-buttons .btn {
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: #e3e3e3;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#answer-buttons .btn:hover {
+    background-color: #ccc;
+}
+
