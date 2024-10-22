@@ -202,9 +202,8 @@ body {
 #winPage .score .scoreValue {
     font-weight: 600;
     color: black;
-    font-size: 55pt;
+    font-size: 45pt;
     margin-top: -50px;
-    padding-left: 40px;
 }
 
 #winPage .score .scoreValue img {
