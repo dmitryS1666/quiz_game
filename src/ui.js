@@ -1,7 +1,69 @@
-import { startMainGame, loadProgress, updateProgressPage, showInfoBlock } from './game.js';
+import {
+    startMainGame,
+    loadProgress,
+    updateProgressPage,
+    showInfoBlock,
+    timer,
+    updateExtraPointsDisplay,
+    useHint5050,
+    useHintFriend,
+    useHintAudience
+} from './game.js';
+
+// reset game
+document.getElementById('resetGame').addEventListener('click', () => {
+    localStorage.clear();
+});
+
+// reset game
+document.getElementById('continueFail').addEventListener('click', () => {
+    switchScreen('progressPage');
+});
+
+document.getElementById('close_btn').addEventListener('click', () => {
+    switchScreen('progressPage'); // Переход к экрану основных вопросов
+});
+
+// HITS
+document.getElementById('fiftyOnFifty').addEventListener('click', () => {
+    let fiftyOnFiftyBtn = document.getElementById('fiftyOnFifty');
+    if (fiftyOnFiftyBtn.classList.contains('active')) {
+        useHint5050();
+    }
+});
+document.getElementById('call').addEventListener('click', () => {
+    let callBtn = document.getElementById('call');
+    if (callBtn.classList.contains('active')) {
+        useHintFriend();
+    }
+});
+document.getElementById('audience').addEventListener('click', () => {
+    let audienceBtn = document.getElementById('audience');
+    if (audienceBtn.classList.contains('active')) {
+        useHintAudience();
+    }
+});
+
+document.getElementById('audienceContinue').addEventListener('click', () => {
+    switchScreen('questionGame'); // Возвращаемся к экрану вопроса
+    showInfoBlock(true, true, true);
+});
+
 
 document.getElementById('continueWin').addEventListener('click', () => {
     switchScreen('progressPage'); // Переход к экрану основных вопросов
+});
+
+document.getElementById('useExtraPoints').addEventListener('click', () => {
+    let extraPoints = parseInt(localStorage.getItem('extraPoints')) || 0;
+    extraPoints = extraPoints - 2;
+    localStorage.setItem('extraPoints', extraPoints);
+    switchScreen('progressPage'); // Переход к экрану основных вопросов
+});
+
+document.getElementById('settingsButton').addEventListener('click', () => {
+    clearInterval(timer); // Очищаем таймер при выборе ответа
+    switchScreen('settings'); // Переход к экрану основных вопросов
 });
 
 function showPreloader() {
@@ -44,6 +106,13 @@ function switchScreen(screenId, isDailyQuestion = false, levelScore = 0) {
             showFailPage(isDailyQuestion);
             showInfoBlock(true, false, false);
         }
+        if (screenId === 'finalAnswerPage') {
+            showFinalAnswerPage();
+            showInfoBlock(true, false, false);
+        }
+        if (screenId === 'audienceHintPage') {
+            showInfoBlock(true, false, false);
+        }
     });
 }
 
@@ -63,6 +132,10 @@ function showWinPage(isDailyQuestion, levelScore) {
 
 function showFailPage() {
     console.log('fail page');
+}
+
+function showFinalAnswerPage() {
+    updateExtraPointsDisplay();
 }
 
 // Обработка клика для возобновления игры с текущего вопроса

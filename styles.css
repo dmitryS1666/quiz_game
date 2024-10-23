@@ -544,13 +544,22 @@ body {
     padding-top: 5px;
 }
 
+#questionGame .questionBody .selected {
+    box-shadow: 0 0 20px #fb669c;
+}
+
+#questionGame .questionBody .unselected {
+    opacity: 0.5;
+}
+
 #questionGame .questionBody .item {
     background-image: url(res/question_item_bg.png);
     width: 80%;
-    height: 70px;
+    height: 64px;
     background-size: contain;
     background-repeat: no-repeat;
-    margin: 0 auto 3px;
+    margin: 0 auto 10px;
+    border-radius: 40px;
 }
 
 #questionGame .questionBody .answers .item .text {

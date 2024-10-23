@@ -139,6 +139,9 @@
     </div>
 
     <div id="audienceHintPage" class="screen hidden">
+        <div id="timer" class="timer">
+            <img src="res/time.png"><span>00:12</span>
+        </div>
         <div class="canva">
             <div class="title">
                 <p>Ask the audience</p>
@@ -168,7 +171,7 @@
                 </div>
 
                 <div class="raw">
-                    <button id="ok" class="ok_button">
+                    <button id="audienceContinue" class="ok_button">
                         <img src="res/continue_button.png">
                     </button>
                 </div>
@@ -188,12 +191,12 @@
                     </div>
                     <div class="heart">
                         <img src="res/heart.png">
-                        <span id="extraPoints">2</span>
+                        <span id="extraPoints"></span>
                     </div>
                 </div>
 
                 <div class="raw">
-                    <button id="ok" class="ok_button">
+                    <button id="useExtraPoints" class="ok_button">
                         <img src="res/use_button.png">
                     </button>
                 </div>
@@ -247,14 +250,14 @@
             </div>
         </div>
         <div class="hintGame">
-            <div id="fiftyOnFifty" class="active">
-                <span id="extraPoints">2</span>
+            <div id="fiftyOnFifty">
+                <span id="extraPoints"></span>
             </div>
-            <div id="call" class="active">
-                <span id="extraPoints">2</span>
+            <div id="call">
+                <span id="extraPoints"></span>
             </div>
-            <div id="audience" class="block">
-                <span id="extraPoints">2</span>
+            <div id="audience">
+                <span id="extraPoints"></span>
             </div>
         </div>
     </div>

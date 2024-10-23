@@ -2,7 +2,7 @@ import { settings, loadSettings, saveSettings } from './settings.js';
 import { switchScreen } from './ui.js';
 
 const MAX_QUESTIONS_PER_ROUND = 10;
-let mainPoints = parseInt(localStorage.getItem('mainPoints')) || 0;
+let mainPoints, extraPoints;
 
 // Функция для сохранения текущего прогресса игрока
 function saveProgress(currentQuestionIndex) {
@@ -16,9 +16,12 @@ function loadProgress() {
 
 // Запуск основного игрового процесса
 function startMainGame() {
+    mainPoints = parseInt(localStorage.getItem('mainPoints')) || 0;
+    extraPoints = parseInt(localStorage.getItem('extraPoints')) || 0;
     const currentQuestionIndex = loadProgress(); // Загружаем прогресс
 
     showInfoBlock(true, true, true);
+    showHintBlock(extraPoints);
 
     // Обновляем прогресс на экране
     updateProgressPage(currentQuestionIndex);
@@ -27,6 +30,9 @@ function startMainGame() {
     if (scoreValue) {
         scoreValue.textContent = `${mainPoints}`;
     }
+
+    updateExtraPointsDisplay();
+    cleanHintResult();
 
     switchScreen('questionGame'); // Переходим на экран игры
     loadQuestions().then(questions => {
@@ -41,7 +47,7 @@ function resetProgress() {
 }
 
 // Отображение основного вопроса игры
-let timer; // Переменная для таймера
+export let timer; // Переменная для таймера
 async function showQuestion(currentQuestionIndex, questions) {
     const question = questions[currentQuestionIndex]; // Берем вопрос по индексу
     displayMainsQuestion(question, currentQuestionIndex);
@@ -56,7 +62,7 @@ async function showQuestion(currentQuestionIndex, questions) {
 // Запуск таймера
 function startTimer(seconds) {
     let timeLeft = seconds;
-    const timerDisplay = document.querySelector('#timer span'); // Обновляем span внутри элемента с id "timer"
+    const timerDisplays = document.querySelectorAll('#timer span'); // Обновляем span внутри элемента с id "timer"
 
     // Обновляем отображение таймера каждую секунду
     timer = setInterval(() => {
@@ -64,7 +70,9 @@ function startTimer(seconds) {
         const seconds = timeLeft % 60; // Получаем секунды
 
         // Форматируем время в формате 00:12
-        timerDisplay.innerText = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        timerDisplays.forEach((timerDisplay, index) => {
+            timerDisplay.innerText = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        });
         timeLeft--;
 
         if (timeLeft < 0) {
@@ -79,7 +87,13 @@ function handleTimeUp() {
     clearInterval(timer); // Очищаем таймер
     const currentQuestionIndex = loadProgress(); // Получаем текущий индекс вопроса
     updateProgressPage(currentQuestionIndex);
-    switchScreen('failPage'); // Переход на экран проигрыша, если время вышло
+    let extraPoints = parseInt(localStorage.getItem('extraPoints')) || 0; // Получаем текущие extra points
+    if (extraPoints > 0) {
+        switchScreen('finalAnswerPage', false);
+    } else {
+        switchScreen('failPage');
+        resetProgress();
+    }
 }
 
 function displayMainsQuestion(question, currentQuestionIndex) {
@@ -106,6 +120,8 @@ function handleMainAnswer(selectedIndex, correctIndex, currentQuestionIndex) {
         scoreValue.textContent = `${mainPoints}`;
     }
 
+    updateExtraPointsDisplay();
+
     // Сохраняем дату последнего ответа на вопрос
     const today = new Date().toLocaleDateString();
     localStorage.setItem('lastQuestionDate', today);
@@ -117,6 +133,7 @@ function handleMainAnswer(selectedIndex, correctIndex, currentQuestionIndex) {
     };
 
     if (selectedIndex === correctIndex) {
+        // Правильный ответ
         mainPoints += levelScore; // Добавляем очки за текущий уровень
         localStorage.setItem('mainPoints', mainPoints); // Сохраняем обновленные очки
         gameProgress.answeredCorrectly = true; // Обновляем статус ответа
@@ -133,11 +150,17 @@ function handleMainAnswer(selectedIndex, correctIndex, currentQuestionIndex) {
             resetProgress();
         }
     } else {
-        saveProgress(currentQuestionIndex); // Сохраняем прогресс с неправильным ответом
-        updateProgressPage(currentQuestionIndex);
-        switchScreen('failPage'); // Переход на экран проигрыша
+        // Неправильный ответ
+        let extraPoints = parseInt(localStorage.getItem('extraPoints')) || 0; // Получаем текущие extra points
+        if (extraPoints > 0) {
+            switchScreen('finalAnswerPage', false);
+        } else {
+            switchScreen('failPage'); // Переход на экран проигрыша
+            resetProgress(); // Сброс прогресса, конец игры
+        }
     }
 }
+
 
 // Функция для обновления прогресса на экране progressPage
 function updateProgressPage(currentQuestionIndex) {
@@ -265,6 +288,166 @@ function showInfoBlock(settingsButton, currentLevel, score) {
     }
 }
 
+function updateExtraPointsDisplay() {
+    let extraPoints = parseInt(localStorage.getItem('extraPoints')) || 0;
+    const extraPointsElements = document.querySelectorAll('#extraPoints');
+
+    // Проставляем значение extraPoints для каждого найденного элемента
+    extraPointsElements.forEach(element => {
+        element.textContent = `${extraPoints}`;
+    });
+
+    showHintBlock(extraPoints);
+}
+
+// HINT SECTION
+function showHintBlock(extraPoints) {
+    let fiftyOnFiftyBtn = document.getElementById('fiftyOnFifty');
+    let callBtn = document.getElementById('call');
+    let audienceBtn = document.getElementById('audience');
+
+    if (extraPoints > 0) {
+        audienceBtn.classList.remove('block');
+        audienceBtn.classList.add('active');
+
+        callBtn.classList.remove('block');
+        callBtn.classList.add('active');
+
+        fiftyOnFiftyBtn.classList.remove('block');
+        fiftyOnFiftyBtn.classList.add('active');
+    } else {
+        audienceBtn.classList.remove('active');
+        audienceBtn.classList.add('block');
+
+        callBtn.classList.remove('active');
+        callBtn.classList.add('block');
+
+        fiftyOnFiftyBtn.classList.remove('active');
+        fiftyOnFiftyBtn.classList.add('block');
+    }
+    // TODO показывать активные подсказки, которые еще не использовались
+}
+
+function useHint5050() {
+    const currentQuestionIndex = loadProgress();
+    loadQuestions().then(questions => {
+        const question = questions[currentQuestionIndex];
+        const incorrectAnswers = [];
+
+        // Собираем индексы всех неправильных ответов
+        question.answers.forEach((answer, index) => {
+            if (index !== question.correct) {
+                incorrectAnswers.push(index);
+            }
+        });
+
+        // Перемешиваем неправильные ответы и выбираем два для скрытия
+        shuffleArray(incorrectAnswers);
+        const [first, second] = incorrectAnswers.slice(0, 2);
+
+        // Прячем выбранные два ответа
+        const answerElements = document.querySelectorAll('#questionGame .item');
+        answerElements[first].classList.add('closed');
+        answerElements[second].classList.add('closed');
+
+        extraPoints -= 2;
+        localStorage.setItem('extraPoints', extraPoints)
+        updateExtraPointsDisplay();
+    });
+}
+
+function useHintFriend() {
+    const currentQuestionIndex = loadProgress();
+    loadQuestions().then(questions => {
+        const question = questions[currentQuestionIndex];
+
+        // Генерируем вероятность того, что друг знает правильный ответ
+        const knowsCorrectAnswer = Math.random() < 0.7;
+
+        let suggestedAnswer;
+        if (knowsCorrectAnswer) {
+            suggestedAnswer = question.correct; // Друг знает правильный ответ
+        } else {
+            // Случайный неправильный ответ
+            const incorrectAnswers = question.answers.map((_, index) => index).filter(index => index !== question.correct);
+            suggestedAnswer = incorrectAnswers[Math.floor(Math.random() * incorrectAnswers.length)];
+        }
+
+        // подсвечиваем выбранный ответ
+        const answerElements = document.querySelectorAll('#questionGame .item');
+        answerElements.forEach((answer, index) => {
+            if (index === suggestedAnswer) {
+                answer.classList.add('selected');
+            } else {
+                answer.classList.add('unselected');
+            }
+        });
+
+        extraPoints -= 2;
+        localStorage.setItem('extraPoints', extraPoints)
+        updateExtraPointsDisplay();
+    });
+}
+
+function useHintAudience() {
+    const currentQuestionIndex = loadProgress();
+    loadQuestions().then(questions => {
+        const question = questions[currentQuestionIndex];
+
+        // Генерируем процент вероятности правильного ответа
+        let correctAnswerPercentage = Math.floor(Math.random() * (60 - 40 + 1)) + 40; // 40-60% для правильного ответа
+        let remainingPercentage = 100 - correctAnswerPercentage;
+
+        const answerPercentages = [];
+        answerPercentages[question.correct] = correctAnswerPercentage;
+
+        // Распределяем проценты среди неправильных ответов
+        const incorrectAnswers = question.answers.map((_, index) => index).filter(index => index !== question.correct);
+        incorrectAnswers.forEach((answer, index) => {
+            const percentage = Math.floor(Math.random() * remainingPercentage);
+            answerPercentages[answer] = percentage;
+            remainingPercentage -= percentage;
+        });
+
+        // Последний неправильный ответ получает остаток процентов
+        answerPercentages[incorrectAnswers[incorrectAnswers.length - 1]] = remainingPercentage;
+
+        // Обновляем элементы на странице с результатами
+        const resultElements = document.querySelectorAll('#audienceHintPage .result');
+        answerPercentages.forEach((percentage, index) => {
+            if (resultElements[index]) {
+                resultElements[index].textContent = `${percentage}%`; // Устанавливаем процент в соответствующий элемент
+            }
+        });
+
+        // Показать экран голосования зала
+        switchScreen('audienceHintPage');
+
+        extraPoints -= 2;
+        localStorage.setItem('extraPoints', extraPoints)
+        updateExtraPointsDisplay();
+
+        // Деактивируем кнопку после использования
+        document.getElementById('hintAudience').disabled = true;
+    });
+}
+
+function cleanHintResult() {
+    const answerElements = document.querySelectorAll('#questionGame .item');
+    answerElements.forEach((answer, index) => {
+        answer.classList.remove('unselected');
+        answer.classList.remove('selected');
+        answer.classList.remove('closed');
+    });
+}
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
 export {
     checkQuestionOfTheDay,
     loadQuestions,
@@ -272,5 +455,9 @@ export {
     startMainGame,
     updateProgressPage,
     loadProgress,
-    showInfoBlock
+    showInfoBlock,
+    updateExtraPointsDisplay,
+    useHint5050,
+    useHintFriend,
+    useHintAudience
 };
