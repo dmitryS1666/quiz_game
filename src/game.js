@@ -1,5 +1,17 @@
-import { settings, loadSettings, saveSettings } from './settings.js';
-import { switchScreen } from './ui.js';
+import {
+    saveProgress,
+    loadProgress,
+    settings,
+    loadSettings,
+    saveSettings,
+    timeOutSound,
+    tapSound,
+    runMusic
+} from './settings.js';
+import {switchScreen, showPreloader} from './ui.js';
+
+import {Browser} from '@capacitor/browser';
+import {App} from '@capacitor/app';
 
 const MAX_QUESTIONS_PER_ROUND = 10;
 let mainPoints, extraPoints;
@@ -8,16 +20,111 @@ let usedHint5050 = false;
 let usedHintFriend = false;
 let usedHintAudience = false;
 
-// Функция для сохранения текущего прогресса игрока
-function saveProgress(currentQuestionIndex) {
-    localStorage.setItem('currentQuestionIndex', currentQuestionIndex);
+
+// document.addEventListener('DOMContentLoaded', () => {
+//     localStorage.setItem('firstRun', 'true');
+//     setupAppListeners();
+//
+//     if (window.NetworkStatusController.isConnectedToInternet()) {
+//         loadBanner();
+//     } else {
+//         checkFirstRunAndLoadData();
+//     }
+// });
+
+// // читать политику
+// document.getElementById('privatePolicyRead').addEventListener('click', async () => {
+//     await tapSound.play();
+//
+//     try {
+//         await Browser.open({url: 'https://cosmicdog.online/'});
+//     } catch (e) {
+//         console.error('Error opening browser:', e);
+//     }
+// });
+//
+// // читать политику
+// document.getElementById('mainPrivatePolicyRead').addEventListener('click', async () => {
+//     await tapSound.play();
+//
+//     try {
+//         await Browser.open({url: 'https://cosmicdog.online/'});
+//     } catch (e) {
+//         console.error('Error opening browser:', e);
+//     }
+// });
+
+function loadBanner() {
+    if (window.BannerLoader && typeof window.BannerLoader.loadBanner === "function") {
+        lockPortretOrientation();
+        window.BannerLoader.loadBanner()
+    }
+    setTimeout(() => {
+        showPreloader();
+    }, 2600);
 }
 
-// Функция для загрузки прогресса
-function loadProgress() {
-    return parseInt(localStorage.getItem('currentQuestionIndex')) || 0;
+function lockPortretOrientation() {
+    if (window.ScreenOrientationController && typeof window.ScreenOrientationController.lockOrientation === "function") {
+        window.ScreenOrientationController.lockOrientation('portrait');
+    }
 }
 
+function setupAppListeners() {
+    App.addListener('appStateChange', (state) => {
+        if (state.isActive) {
+            // Приложение было открыто (активировано)
+            console.log('Приложение активировано.');
+            localStorage.setItem('firstRun', 'true');
+        } else {
+            // Приложение было свернуто или перешло в фоновый режим
+            console.log('Приложение в фоновом режиме.');
+        }
+    });
+}
+
+App.addListener('backButton', ({canGoBack}) => {
+    const currentPage = getCurrentPage(); // Предполагаемая функция, возвращающая текущую страницу
+
+    if (currentPage === 'mainPage' || currentPage === 'mainPrivacyPolicePage') {
+        // Если пользователь находится на главной странице или странице политики, сворачиваем приложение
+        localStorage.setItem('firstRun', 'true');
+        App.minimizeApp();
+    } else {
+        // Если пользователь не на главной странице, переходим на нее
+        switchScreen('progressPage');
+    }
+});
+
+function checkFirstRunAndLoadData() {
+    let acceptPrivacy = localStorage.getItem('acceptPolicy');
+
+    if (acceptPrivacy) {
+        switchScreen('progressPage');
+    } else {
+        switchScreen('mainPrivacyPolicePage');
+    }
+}
+
+function getCurrentPage() {
+    // Получаем все элементы с классом 'page'
+    const pages = document.querySelectorAll('.screen');
+
+    // Проходим по каждому элементу
+    for (let i = 0; i < pages.length; i++) {
+        const page = pages[i];
+
+        // Проверяем, виден ли элемент (не имеет display: none)
+        if (window.getComputedStyle(page).display !== 'none') {
+            // Возвращаем ID видимой страницы
+            return page.id;
+        }
+    }
+    return null;
+}
+
+
+// GAME
 // Запуск основного игрового процесса
 function startMainGame() {
     mainPoints = parseInt(localStorage.getItem('mainPoints')) || 0;
@@ -89,6 +196,7 @@ function startTimer(seconds) {
 // Обработка истечения времени
 function handleTimeUp() {
     clearInterval(timer); // Очищаем таймер
+    timeOutSound.play();
     const currentQuestionIndex = loadProgress(); // Получаем текущий индекс вопроса
     updateProgressPage(currentQuestionIndex);
     let extraPoints = parseInt(localStorage.getItem('extraPoints')) || 0; // Получаем текущие extra points
@@ -114,6 +222,8 @@ function displayMainsQuestion(question, currentQuestionIndex) {
 
 // Обработка ответа на основной вопрос
 function handleMainAnswer(selectedIndex, correctIndex, currentQuestionIndex) {
+    tapSound.play();
+
     clearInterval(timer); // Очищаем таймер при выборе ответа
     // Получаем очки за текущий уровень
     const currentItem = document.querySelector(`#progressPage .levels .item[data-level="${currentQuestionIndex + 1}"]`);
@@ -136,8 +246,8 @@ function handleMainAnswer(selectedIndex, correctIndex, currentQuestionIndex) {
         answeredCorrectly: false // По умолчанию неверный ответ
     };
 
+    // Правильный ответ
     if (selectedIndex === correctIndex) {
-        // Правильный ответ
         mainPoints += levelScore; // Добавляем очки за текущий уровень
         localStorage.setItem('mainPoints', mainPoints); // Сохраняем обновленные очки
         gameProgress.answeredCorrectly = true; // Обновляем статус ответа
@@ -166,7 +276,6 @@ function handleMainAnswer(selectedIndex, correctIndex, currentQuestionIndex) {
         }
     }
 }
-
 
 // Функция для обновления прогресса на экране progressPage
 function updateProgressPage(currentQuestionIndex) {
@@ -201,6 +310,7 @@ async function loadQuestions() {
 // DAILY section
 // Проверка даты последнего вопроса дня
 function checkQuestionOfTheDay() {
+    runMusic();
     const lastQuestionDate = localStorage.getItem('lastQuestionDate');
     const today = new Date().toLocaleDateString();
 
@@ -250,6 +360,8 @@ function displayDailyQuestion(question) {
 
 // Обработка ответа на вопрос дня
 function handleDailyAnswer(selectedIndex, correctIndex) {
+    tapSound.play();
+
     let extraPoints = parseInt(localStorage.getItem('extraPoints')) || 0; // Приводим к числу или устанавливаем 0, если нет
 
     // Сохраняем дату последнего ответа на вопрос дня
