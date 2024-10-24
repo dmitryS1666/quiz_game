@@ -235,6 +235,7 @@ body {
     transform: translateX(-50%);
     left: 50%;
     margin-top: 15%;
+    background: #fd3a991f;
 }
 
 .canva .title {
@@ -374,10 +375,42 @@ body {
 .canva .body .chart .item {
     height: 200px;
     width: 45px;
-    background: rgba(249, 101, 155, 0.66);
     float: left;
     margin: 0 auto auto 15px;
     text-align: center;
+    position: relative;
+}
+
+.canva .body .chart .item .block {
+    height: 90%;
+    width: 45px;
+    position: absolute;
+    bottom: 0;
+    background: rgba(249, 101, 155, 0.66);
+    border-radius: 3px;
+}
+
+.canva .body .chart .item .result {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: 600;
+}
+
+#item_result_1 {
+    background: linear-gradient(#FF3A9A, #670427);
+}
+
+#item_result_2 {
+    background: linear-gradient(#3af8ff, #045867);
+}
+
+#item_result_3 {
+    background: linear-gradient(#ff513a, #671004);
+}
+
+#item_result_4 {
+    background: linear-gradient(#563AFF, #4D0467);
 }
 
 .canva .body .chartLegend {

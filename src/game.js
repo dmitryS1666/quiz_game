@@ -4,6 +4,10 @@ import { switchScreen } from './ui.js';
 const MAX_QUESTIONS_PER_ROUND = 10;
 let mainPoints, extraPoints;
 
+let usedHint5050 = false;
+let usedHintFriend = false;
+let usedHintAudience = false;
+
 // Функция для сохранения текущего прогресса игрока
 function saveProgress(currentQuestionIndex) {
     localStorage.setItem('currentQuestionIndex', currentQuestionIndex);
@@ -148,6 +152,7 @@ function handleMainAnswer(selectedIndex, correctIndex, currentQuestionIndex) {
 
         if (currentQuestionIndex >= MAX_QUESTIONS_PER_ROUND) {
             resetProgress();
+            resetHints();
         }
     } else {
         // Неправильный ответ
@@ -157,6 +162,7 @@ function handleMainAnswer(selectedIndex, correctIndex, currentQuestionIndex) {
         } else {
             switchScreen('failPage'); // Переход на экран проигрыша
             resetProgress(); // Сброс прогресса, конец игры
+            resetHints();
         }
     }
 }
@@ -325,7 +331,22 @@ function showHintBlock(extraPoints) {
         fiftyOnFiftyBtn.classList.remove('active');
         fiftyOnFiftyBtn.classList.add('block');
     }
-    // TODO показывать активные подсказки, которые еще не использовались
+}
+
+function resetHints() {
+    usedHint5050 = false;
+    usedHintFriend = false;
+    usedHintAudience = false;
+
+    // Разблокируем кнопки подсказок
+    const hintButtons = document.querySelectorAll('#hintAudience, #fiftyOnFifty, #call');
+    hintButtons.forEach(button => {
+        button.disabled = false;
+        button.classList.remove('block');
+        button.classList.add('active');
+    });
+
+    updateExtraPointsDisplay(); // Обновляем отображение подсказок
 }
 
 function useHint5050() {
@@ -353,6 +374,8 @@ function useHint5050() {
         extraPoints -= 2;
         localStorage.setItem('extraPoints', extraPoints)
         updateExtraPointsDisplay();
+
+        document.getElementById('fiftyOnFifty').classList.add('block');
     });
 }
 
@@ -386,6 +409,8 @@ function useHintFriend() {
         extraPoints -= 2;
         localStorage.setItem('extraPoints', extraPoints)
         updateExtraPointsDisplay();
+
+        document.getElementById('call').classList.add('block');
     });
 }
 
@@ -416,7 +441,14 @@ function useHintAudience() {
         const resultElements = document.querySelectorAll('#audienceHintPage .result');
         answerPercentages.forEach((percentage, index) => {
             if (resultElements[index]) {
-                resultElements[index].textContent = `${percentage}%`; // Устанавливаем процент в соответствующий элемент
+                resultElements[index].textContent = `${percentage}%`;
+                resultElements[index].style.bottom = `${percentage}%`;
+            }
+        });
+        const blockElements = document.querySelectorAll('#audienceHintPage .block');
+        answerPercentages.forEach((percentage, index) => {
+            if (blockElements[index]) {
+                blockElements[index].style.height = `${percentage}%`;
             }
         });
 
@@ -428,7 +460,7 @@ function useHintAudience() {
         updateExtraPointsDisplay();
 
         // Деактивируем кнопку после использования
-        document.getElementById('hintAudience').disabled = true;
+        document.getElementById('audience').classList.add('block');
     });
 }
 
