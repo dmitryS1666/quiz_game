@@ -3,7 +3,7 @@
     src: url(../res/font/lao-mn.ttf);
 }
 
-body {
+html, body {
     width: 100%;
     height: 100%;
     padding: 0;
@@ -157,8 +157,10 @@ body {
 /*---------------WIN + FAIL--------------*/
 #winPage, #failPage {
     width: 100%;
+    height: 400px;
     text-align: center;
     padding-top: 30%;
+    position: relative;
 }
 
 #winPage .title,
@@ -172,7 +174,7 @@ body {
     transform: translateX(-50%);
     font-size: 25pt;
     color: white;
-    padding-top: 15px;
+    padding-top: 20px;
     float: left;
 }
 
@@ -220,7 +222,7 @@ body {
     left: 50%;
     transform: translateX(-50%);
     border: none;
-    bottom: -550px;
+    bottom: -120px;
 }
 
 /*---------------WIN + FAIL--------------*/
@@ -545,6 +547,7 @@ body {
     transform: translateX(-50%);
     width: 100%;
     height: 100vh;
+    top: 110px;
 }
 
 #questionGame .questionBody {
@@ -703,7 +706,6 @@ body {
 /*-------------------CURRENT LEVEL---------------------*/
 #currentLevel {
     border: 1px solid white;
-    outline: 3px solid #fe4a9b;
     border-radius: 40px;
     height: 30px;
     margin-top: 3px;
@@ -713,6 +715,8 @@ body {
     line-height: 31px;
     color: white;
     background: #fb669c;
+    outline: none;
+    box-shadow: 0 0 0 3px #fe4a9b;
 }
 
 #currentLevel p {
@@ -726,8 +730,9 @@ body {
     display: flex;
     justify-content: flex-end;
     align-items: flex-start;
-    margin-top: 20px;
+    margin-top: 50px;
     margin-right: 45px;
+    margin-bottom: -30px;
 }
 /*---------------END CONTAINER CONFIG------------------*/
 
@@ -737,7 +742,7 @@ body {
     height: 80px;
     text-align: center;
     position: absolute;
-    top: 70vh;
+    top: 73vh;
 }
 
 #fiftyOnFifty, #call, #audience {

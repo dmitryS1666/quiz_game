@@ -64,7 +64,7 @@ function loadBanner() {
     }, 2600);
 }
 
-function lockPortretOrientation() {
+export function lockPortretOrientation() {
     if (window.ScreenOrientationController && typeof window.ScreenOrientationController.lockOrientation === "function") {
         window.ScreenOrientationController.lockOrientation('portrait');
     }
@@ -290,11 +290,11 @@ function updateProgressPage(currentQuestionIndex) {
         const levelIndex = parseInt(item.getAttribute('data-level')); // Получаем индекс уровня из data-level
         item.classList.remove('active', 'done'); // Убираем все классы
 
-        if (levelIndex < currentQuestionIndex) {
+        if (levelIndex < currentQuestionIndex + 1) {
             item.classList.add('done'); // Добавляем done для пройденных вопросов
         }
 
-        if (levelIndex === currentQuestionIndex) {
+        if (levelIndex === currentQuestionIndex + 1) {
             item.classList.add('active'); // Добавляем active для текущего вопроса
         }
     });
