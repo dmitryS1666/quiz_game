@@ -804,3 +804,53 @@ html, body {
     background-color: #ccc;
 }
 
+
+/*------------------OFFER WALL------------------------*/
+#gamesList {
+    /*position: relative;*/
+    /*!*top: -240px;*!*/
+    /*width: 100%;*/
+    /*height: 100%;*/
+
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+
+    overflow-y: auto;
+}
+
+#gamesList > div:first-child {
+    margin-top: -240px;
+}
+
+#gamesList .game {
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    height: 240px;
+}
+
+#gamesList .game img {
+    position: relative;
+    transform: translateX(50%);
+    margin-top: 50px;
+    float: left;
+    width: 128px;
+    height: 128px;
+}
+
+#gamesList .game button {
+    position: relative;
+    left: 30%;
+    width: 120px;
+    height: 45px;
+    border-radius: 15px;
+    background: linear-gradient(to bottom, #fff000, #f3bd48);
+    font-weight: bold;
+    margin-top: 90px;
+    float: left;
+}
+/*------------------OFFER WALL------------------------*/
+

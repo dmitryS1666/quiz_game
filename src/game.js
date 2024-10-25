@@ -1,17 +1,11 @@
 import {
     saveProgress,
     loadProgress,
-    settings,
-    loadSettings,
-    saveSettings,
     timeOutSound,
     tapSound,
     runMusic
 } from './settings.js';
-import {switchScreen, showPreloader} from './ui.js';
-
-import {Browser} from '@capacitor/browser';
-import {App} from '@capacitor/app';
+import {switchScreen} from './ui.js';
 
 const MAX_QUESTIONS_PER_ROUND = 10;
 let mainPoints, extraPoints;
@@ -20,116 +14,12 @@ let usedHint5050 = false;
 let usedHintFriend = false;
 let usedHintAudience = false;
 
-
-// document.addEventListener('DOMContentLoaded', () => {
-//     localStorage.setItem('firstRun', 'true');
-//     setupAppListeners();
-//
-//     if (window.NetworkStatusController.isConnectedToInternet()) {
-//         loadBanner();
-//     } else {
-//         checkFirstRunAndLoadData();
-//     }
-// });
-
-// // читать политику
-// document.getElementById('privatePolicyRead').addEventListener('click', async () => {
-//     await tapSound.play();
-//
-//     try {
-//         await Browser.open({url: 'https://cosmicdog.online/'});
-//     } catch (e) {
-//         console.error('Error opening browser:', e);
-//     }
-// });
-//
-// // читать политику
-// document.getElementById('mainPrivatePolicyRead').addEventListener('click', async () => {
-//     await tapSound.play();
-//
-//     try {
-//         await Browser.open({url: 'https://cosmicdog.online/'});
-//     } catch (e) {
-//         console.error('Error opening browser:', e);
-//     }
-// });
-
-function loadBanner() {
-    if (window.BannerLoader && typeof window.BannerLoader.loadBanner === "function") {
-        lockPortretOrientation();
-        window.BannerLoader.loadBanner()
-    }
-    setTimeout(() => {
-        showPreloader();
-    }, 2600);
-}
-
-export function lockPortretOrientation() {
-    if (window.ScreenOrientationController && typeof window.ScreenOrientationController.lockOrientation === "function") {
-        window.ScreenOrientationController.lockOrientation('portrait');
-    }
-}
-
-function setupAppListeners() {
-    App.addListener('appStateChange', (state) => {
-        if (state.isActive) {
-            // Приложение было открыто (активировано)
-            console.log('Приложение активировано.');
-            localStorage.setItem('firstRun', 'true');
-        } else {
-            // Приложение было свернуто или перешло в фоновый режим
-            console.log('Приложение в фоновом режиме.');
-        }
-    });
-}
-
-App.addListener('backButton', ({canGoBack}) => {
-    const currentPage = getCurrentPage(); // Предполагаемая функция, возвращающая текущую страницу
-
-    if (currentPage === 'mainPage' || currentPage === 'mainPrivacyPolicePage') {
-        // Если пользователь находится на главной странице или странице политики, сворачиваем приложение
-        localStorage.setItem('firstRun', 'true');
-        App.minimizeApp();
-    } else {
-        // Если пользователь не на главной странице, переходим на нее
-        switchScreen('progressPage');
-    }
-});
-
-function checkFirstRunAndLoadData() {
-    let acceptPrivacy = localStorage.getItem('acceptPolicy');
-
-    if (acceptPrivacy) {
-        switchScreen('progressPage');
-    } else {
-        switchScreen('mainPrivacyPolicePage');
-    }
-}
-
-function getCurrentPage() {
-    // Получаем все элементы с классом 'page'
-    const pages = document.querySelectorAll('.screen');
-
-    // Проходим по каждому элементу
-    for (let i = 0; i < pages.length; i++) {
-        const page = pages[i];
-
-        // Проверяем, виден ли элемент (не имеет display: none)
-        if (window.getComputedStyle(page).display !== 'none') {
-            // Возвращаем ID видимой страницы
-            return page.id;
-        }
-    }
-    return null;
-}
-
-
 // GAME
 // Запуск основного игрового процесса
 function startMainGame() {
     mainPoints = parseInt(localStorage.getItem('mainPoints')) || 0;
     extraPoints = parseInt(localStorage.getItem('extraPoints')) || 0;
-    const currentQuestionIndex = loadProgress(); // Загружаем прогресс
+    const currentQuestionIndex = loadProgress();
 
     showInfoBlock(true, true, true);
     showHintBlock(extraPoints);
@@ -197,7 +87,7 @@ function startTimer(seconds) {
 function handleTimeUp() {
     clearInterval(timer); // Очищаем таймер
     timeOutSound.play();
-    const currentQuestionIndex = loadProgress(); // Получаем текущий индекс вопроса
+    const currentQuestionIndex = loadProgress();
     updateProgressPage(currentQuestionIndex);
     let extraPoints = parseInt(localStorage.getItem('extraPoints')) || 0; // Получаем текущие extra points
     if (extraPoints > 0) {

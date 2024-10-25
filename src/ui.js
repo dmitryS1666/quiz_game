@@ -20,6 +20,18 @@ import {
     vibrate
 } from './settings'
 
+import {Browser} from "@capacitor/browser";
+
+// читать политику
+document.getElementById('readPrivacyPolicy').addEventListener('click', async () => {
+    await tapSound.play();
+
+    try {
+        await Browser.open({url: 'https://cosmicdog.online/'});
+    } catch (e) {
+        console.error('Error opening browser:', e);
+    }
+});
 // reset game
 document.getElementById('resetGame').addEventListener('click', () => {
     clickSound.play();
