@@ -94,16 +94,17 @@ function lockPortraitOrientation() {
 }
 
 App.addListener('backButton', ({canGoBack}) => {
-    const currentPage = getCurrentPage(); // Предполагаемая функция, возвращающая текущую страницу
+    App.minimizeApp();
 
-    if (currentPage === 'progressPage') {
-        // Если пользователь находится на главной странице или странице политики, сворачиваем приложение
-        localStorage.setItem('firstRun', 'true');
-        App.minimizeApp();
-    } else {
-        // Если пользователь не на главной странице, переходим на нее
-        switchScreen('progressPage');
-    }
+    // const currentPage = getCurrentPage(); // Предполагаемая функция, возвращающая текущую страницу
+    // if (currentPage === 'progressPage') {
+    //     // Если пользователь находится на главной странице или странице политики, сворачиваем приложение
+    //     localStorage.setItem('firstRun', 'true');
+    //     App.minimizeApp();
+    // } else {
+    //     // Если пользователь не на главной странице, переходим на нее
+    //     switchScreen('progressPage');
+    // }
 });
 
 function getCurrentPage() {

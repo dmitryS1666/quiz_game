@@ -14,9 +14,14 @@
 <div id="app">
     <audio id="menuMusic" src="res/audio/background_menu_sound.mp3" loop></audio>
 
+    <div id="resetNotification" class="screen hidden">
+        <div class="overlay"></div>
+        <div class="notificationText">Score has been reset</div>
+    </div>
+
     <div id="containerConfig" class="screen hidden">
         <div class="containerConfig">
-            <div id="settingsButton">
+            <div id="settingsButton" style="z-index: 1000;">
                 <img src="res/settings_button.png">
             </div>
             <div id="currentLevel">

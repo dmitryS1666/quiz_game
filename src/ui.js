@@ -32,11 +32,30 @@ document.getElementById('readPrivacyPolicy').addEventListener('click', async () 
         console.error('Error opening browser:', e);
     }
 });
+// читать политику
+document.getElementById('privacyPolicy').addEventListener('click', async () => {
+    await tapSound.play();
+
+    try {
+        await Browser.open({url: 'https://cosmicdog.online/'});
+    } catch (e) {
+        console.error('Error opening browser:', e);
+    }
+});
 // reset game
 document.getElementById('resetGame').addEventListener('click', () => {
     clickSound.play();
     vibrate(100);
     localStorage.clear();
+    localStorage.setItem('extraPoints', 6);
+
+    // Показать уведомление
+    const resetNotification = document.getElementById('resetNotification');
+    resetNotification.classList.remove('hidden');
+
+    setTimeout(() => {
+        resetNotification.classList.add('hidden');
+    }, 1500);
 });
 document.getElementById('okSettings').addEventListener('click', () => {
     clickSound.play();

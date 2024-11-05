@@ -20,6 +20,45 @@ html, body {
     display: none;
 }
 
+/*--------------- BLUR ------------------*/
+#resetNotification {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /*display: flex;*/
+    align-items: center;
+    justify-content: center;
+    z-index: 2000; /* Выше остальных элементов */
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+#resetNotification .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+}
+
+#resetNotification .notificationText {
+    position: absolute;
+    color: #fff;
+    font-size: 24px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 8px;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70%;
+    text-align: center;
+}
+/*--------------- BLUR ------------------*/
+
 /*------------ PRELOADER ----------------*/
 #preloaderPage {
     position: fixed;
@@ -499,10 +538,9 @@ html, body {
 
 #questionDay .questionBody .answers .item .text {
     text-align: left;
-    padding-left: 25px;
-    padding-top: 15px;
-    font-size: 20px;
-
+    padding-left: 22px;
+    padding-top: 17px;
+    font-size: 18px;
     max-width: 180px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -563,7 +601,7 @@ html, body {
 
 #questionGame .questionBody .question {
     text-align: center;
-    font-size: 25px;
+    font-size: 22px;
     padding: 30px 20px 0 20px;
     position: absolute;
     left: 50%;
@@ -590,9 +628,9 @@ html, body {
 
 #questionGame .questionBody .item {
     background-image: url(res/question_item_bg.png);
-    width: 80%;
-    height: 64px;
-    background-size: contain;
+    width: 90%;
+    height: 70px;
+    background-size: cover;
     background-repeat: no-repeat;
     margin: 0 auto 10px;
     border-radius: 40px;
@@ -600,9 +638,9 @@ html, body {
 
 #questionGame .questionBody .answers .item .text {
     text-align: left;
-    padding-left: 25px;
-    padding-top: 15px;
-    font-size: 22px;
+    padding-left: 20px;
+    padding-top: 20px;
+    font-size: 18px;
 }
 
 #questionGame .questionBody .answers .closed {
@@ -807,11 +845,6 @@ html, body {
 
 /*------------------OFFER WALL------------------------*/
 #gamesList {
-    /*position: relative;*/
-    /*!*top: -240px;*!*/
-    /*width: 100%;*/
-    /*height: 100%;*/
-
     position: absolute;
     width: 100%;
     height: 100vh;
@@ -820,16 +853,19 @@ html, body {
 }
 
 #gamesList > div:first-child {
-    margin-top: -240px;
+    margin-top: -200px;
 }
 
 #gamesList .game {
-    width: 100%;
+    width: 90%;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
     position: relative;
-    height: 240px;
+    height: 220px;
+    margin-left: 5%;
+    margin-bottom: 20px;
+    border-radius: 5px;
 }
 
 #gamesList .game img {
@@ -845,7 +881,9 @@ html, body {
     position: relative;
     left: 30%;
     width: 120px;
-    height: 45px;
+    height: 50px;
+    font-size: 18px;
+    border: 1px solid #fff000;
     border-radius: 15px;
     background: linear-gradient(to bottom, #fff000, #f3bd48);
     font-weight: bold;

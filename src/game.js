@@ -10,6 +10,8 @@ import {switchScreen} from './ui.js';
 const MAX_QUESTIONS_PER_ROUND = 10;
 let mainPoints, extraPoints;
 
+localStorage.setItem('extraPoints', 6);
+
 let usedHint5050 = false;
 let usedHintFriend = false;
 let usedHintAudience = false;
@@ -50,6 +52,11 @@ function resetProgress() {
 // Отображение основного вопроса игры
 export let timer; // Переменная для таймера
 async function showQuestion(currentQuestionIndex, questions) {
+    // Перемешиваем вопросы при первом вызове
+    if (currentQuestionIndex === 0) {
+        questions = shuffleQuestions(questions); // Перемешиваем вопросы
+    }
+
     const question = questions[currentQuestionIndex]; // Берем вопрос по индексу
     displayMainsQuestion(question, currentQuestionIndex);
 
@@ -58,6 +65,15 @@ async function showQuestion(currentQuestionIndex, questions) {
     // Запускаем таймер на 12 секунд
     startTimer(12);
     showInfoBlock(true, true, true);
+}
+
+function shuffleQuestions(questions) {
+    // Используем алгоритм Фишера-Йейтса для перемешивания массива
+    for (let i = questions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [questions[i], questions[j]] = [questions[j], questions[i]]; // Меняем элементы местами
+    }
+    return questions;
 }
 
 // Запуск таймера
@@ -173,7 +189,7 @@ function updateProgressPage(currentQuestionIndex) {
 
     const currentLevelElement = document.getElementById("currentLevel");
     if (currentLevelElement) {
-        currentLevelElement.textContent = `${currentQuestionIndex}/10`;
+        currentLevelElement.textContent = `${currentQuestionIndex + 1}/10`;
     }
 
     levelItems.forEach(item => {
