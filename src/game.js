@@ -1,10 +1,4 @@
-import {
-    saveProgress,
-    loadProgress,
-    timeOutSound,
-    tapSound,
-    runMusic
-} from './settings.js';
+import {loadProgress, runMusic, saveProgress, tapSound, timeOutSound} from './settings.js';
 import {switchScreen} from './ui.js';
 
 const MAX_QUESTIONS_PER_ROUND = 10;
@@ -52,18 +46,13 @@ function resetProgress() {
 // Отображение основного вопроса игры
 export let timer; // Переменная для таймера
 async function showQuestion(currentQuestionIndex, questions) {
-    // Перемешиваем вопросы при первом вызове
-    if (currentQuestionIndex === 0) {
-        questions = shuffleQuestions(questions); // Перемешиваем вопросы
-    }
-
     const question = questions[currentQuestionIndex]; // Берем вопрос по индексу
     displayMainsQuestion(question, currentQuestionIndex);
 
     // Обновляем классы на progressPage
     updateProgressPage(currentQuestionIndex);
     // Запускаем таймер на 12 секунд
-    startTimer(12);
+    startTimer(120);
     showInfoBlock(true, true, true);
 }
 
@@ -208,10 +197,20 @@ function updateProgressPage(currentQuestionIndex) {
 
 // Загрузка основных вопросов игры
 async function loadQuestions() {
-    const response = await fetch('questions.json');
-    const questions = await response.json();
-    return questions;
+    // Проверяем, есть ли перемешанные вопросы в localStorage
+    let questions = JSON.parse(localStorage.getItem('shuffledQuestions')); // Правильное извлечение
+
+    // Если вопросов нет в localStorage, загружаем их из исходного файла и сохраняем в localStorage
+    if (!questions) {
+        const response = await fetch('questions.json');
+        const questionsFromFile = await response.json();
+        questions = shuffleQuestions(questionsFromFile);  // Перемешиваем вопросы
+        localStorage.setItem('shuffledQuestions', JSON.stringify(questions)); // Сохраняем массив вопросов в localStorage
+    }
+
+    return questions;  // Возвращаем перемешанные вопросы
 }
+
 
 // DAILY section
 // Проверка даты последнего вопроса дня

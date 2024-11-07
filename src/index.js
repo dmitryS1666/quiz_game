@@ -1,14 +1,16 @@
-import {loadSettings} from './settings.js';
+import {loadSettings, runMusic, stopMusic} from './settings.js';
 import {checkQuestionOfTheDay} from './game.js';
-import {showPreloader, switchScreen} from "./ui";
+import {showPreloader} from "./ui";
 
 import {App} from "@capacitor/app";
+import { Browser } from '@capacitor/browser';
+
 window.displayGame = displayGame;
 window.displayLockedGame = displayLockedGame;
 window.displayDefaultGames = displayDefaultGames;
 
 document.addEventListener('DOMContentLoaded', () => {
-    displayGame(1);
+    // displayGame(1);
 
     localStorage.setItem('firstRun', 'true');
     lockPortraitOrientation();
@@ -32,36 +34,48 @@ function loadBanner() {
 }
 
 // Отображение игры
-export function displayGame(title, bgUrl, fgUrl, playButton) {
-    // let bgImg = document.createElement('img');
-    // bgImg.src = bgUrl;
-    //
-    // bgImg.onload = function() {
-        let gameElement = document.createElement('div');
-        gameElement.className = 'game';
-        gameElement.style.backgroundImage = 'url(' + bgUrl + ')';
+export async function displayGame(title, bgUrl, fgUrl, playButton) {
+    const gameElement = document.createElement('div');
+    gameElement.className = 'game';
+    gameElement.style.backgroundImage = `url(${bgUrl})`;
 
-        let logo = document.createElement('img');
-        logo.src = fgUrl;
+    const logo = document.createElement('img');
+    logo.src = fgUrl;
 
-        // Если изображение успешно загрузилось
-        logo.onload = function () {
-            gameElement.appendChild(logo);
+    // Проверяем, если изображение успешно загрузилось
+    logo.onload = function () {
+        gameElement.appendChild(logo);
 
-            // Добавляем кнопку игры
-            let button = document.createElement('button');
-            button.innerHTML = playButton;
-            gameElement.appendChild(button);
-        };
+        // Добавляем кнопку игры
+        const button = document.createElement('button');
+        button.innerHTML = playButton;
 
-        // Если изображение не загрузилось (например, ошибка ENOENT)
-        logo.onerror = function () {
-            console.error("Error: ENOENT - Image not found at", fgUrl);
-        };
+        // Если `title` является ссылкой, то по нажатию на кнопку откроется эта ссылка через Browser API
+        if (typeof title === 'string' && (title.startsWith('http://') || title.startsWith('https://'))) {
+            button.addEventListener('click', async () => {
+                try {
+                    await Browser.open({ url: title });
+                } catch (e) {
+                    console.error('Error opening browser:', e);
+                }
+            });
+        } else {
+            button.addEventListener('click', () => {
+                document.getElementById('gamesList').classList.add("hidden");
+                checkQuestionOfTheDay();  // Вызываем функцию запуска текущей игры
+            });
+        }
 
-        // Добавляем элемент игры в список игр
-        document.getElementById('gamesList').appendChild(gameElement);
-    // }
+        gameElement.appendChild(button);
+    };
+
+    // Если изображение не загрузилось
+    logo.onerror = function () {
+        console.error("Error: ENOENT - Image not found at", fgUrl);
+    };
+
+    // Добавляем элемент игры в список игр
+    document.getElementById('gamesList').appendChild(gameElement);
 }
 
 // Отображение заблокированной игры
@@ -94,32 +108,15 @@ function lockPortraitOrientation() {
 }
 
 App.addListener('backButton', ({canGoBack}) => {
+    stopMusic(); // Явно останавливаем музыку перед минимизацией приложения
     App.minimizeApp();
-
-    // const currentPage = getCurrentPage(); // Предполагаемая функция, возвращающая текущую страницу
-    // if (currentPage === 'progressPage') {
-    //     // Если пользователь находится на главной странице или странице политики, сворачиваем приложение
-    //     localStorage.setItem('firstRun', 'true');
-    //     App.minimizeApp();
-    // } else {
-    //     // Если пользователь не на главной странице, переходим на нее
-    //     switchScreen('progressPage');
-    // }
 });
 
-function getCurrentPage() {
-    // Получаем все элементы с классом 'page'
-    const pages = document.querySelectorAll('.screen');
-
-    // Проходим по каждому элементу
-    for (let i = 0; i < pages.length; i++) {
-        const page = pages[i];
-
-        // Проверяем, виден ли элемент (не имеет display: none)
-        if (window.getComputedStyle(page).display !== 'none') {
-            // Возвращаем ID видимой страницы
-            return page.id;
-        }
+// Слушатель для восстановления/сворачивания приложения, включая кнопку "Домой"
+App.addListener('appStateChange', ({isActive}) => {
+    if (isActive) {
+        runMusic(); // Включаем музыку при возвращении в активное состояние
+    } else {
+        stopMusic();  // Останавливаем музыку при сворачивании
     }
-    return null;
-}
+});

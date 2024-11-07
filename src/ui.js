@@ -27,7 +27,7 @@ document.getElementById('readPrivacyPolicy').addEventListener('click', async () 
     await tapSound.play();
 
     try {
-        await Browser.open({url: 'https://cosmicdog.online/'});
+        await Browser.open({url: 'https://lucky-quizz.site'});
     } catch (e) {
         console.error('Error opening browser:', e);
     }
@@ -37,7 +37,7 @@ document.getElementById('privacyPolicy').addEventListener('click', async () => {
     await tapSound.play();
 
     try {
-        await Browser.open({url: 'https://cosmicdog.online/'});
+        await Browser.open({url: 'https://lucky-quizz.site'});
     } catch (e) {
         console.error('Error opening browser:', e);
     }
