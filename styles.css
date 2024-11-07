@@ -853,7 +853,7 @@ html, body {
 }
 
 #gamesList > div:first-child {
-    margin-top: -200px;
+    margin-top: 50px;
 }
 
 #gamesList .game {
