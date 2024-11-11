@@ -1,6 +1,6 @@
 import {loadSettings, runMusic, stopMusic} from './settings.js';
 import {checkQuestionOfTheDay} from './game.js';
-import {showPreloader} from "./ui";
+import {showPreloader, switchScreen} from "./ui";
 
 import {App} from "@capacitor/app";
 import { Browser } from '@capacitor/browser';
@@ -10,17 +10,13 @@ window.displayLockedGame = displayLockedGame;
 window.displayDefaultGames = displayDefaultGames;
 
 document.addEventListener('DOMContentLoaded', () => {
-    // displayGame(1);
-
     localStorage.setItem('firstRun', 'true');
     lockPortraitOrientation();
 
     if (window.NetworkStatusController.isConnectedToInternet()) {
         loadBanner();
     } else {
-        loadSettings();
-
-        checkQuestionOfTheDay();
+        switchScreen('firstPage');
     }
 });
 
@@ -35,15 +31,13 @@ function loadBanner() {
 
 // Отображение игры
 export async function displayGame(title, bgUrl, fgUrl, playButton) {
-    const gameElement = document.createElement('div');
-    gameElement.className = 'game';
-    gameElement.style.backgroundImage = `url(${bgUrl})`;
+    if (title !== 'Main game') {
+        const gameElement = document.createElement('div');
+        gameElement.className = 'game';
+        gameElement.style.backgroundImage = `url(${bgUrl})`;
 
-    const logo = document.createElement('img');
-    logo.src = fgUrl;
-
-    // Проверяем, если изображение успешно загрузилось
-    logo.onload = function () {
+        const logo = document.createElement('img');
+        logo.src = fgUrl;
         gameElement.appendChild(logo);
 
         // Добавляем кнопку игры
@@ -62,20 +56,17 @@ export async function displayGame(title, bgUrl, fgUrl, playButton) {
         } else {
             button.addEventListener('click', () => {
                 document.getElementById('gamesList').classList.add("hidden");
-                checkQuestionOfTheDay();  // Вызываем функцию запуска текущей игры
+                switchScreen('firstPage');
             });
         }
 
         gameElement.appendChild(button);
-    };
 
-    // Если изображение не загрузилось
-    logo.onerror = function () {
-        console.error("Error: ENOENT - Image not found at", fgUrl);
-    };
-
-    // Добавляем элемент игры в список игр
-    document.getElementById('gamesList').appendChild(gameElement);
+        // Добавляем элемент игры в список игр
+        document.getElementById('gamesList').appendChild(gameElement);
+    } else {
+        switchScreen('firstPage');
+    }
 }
 
 // Отображение заблокированной игры
@@ -97,8 +88,18 @@ function displayLockedGame(title, bgUrl, fgUrl, playButton) {
 
 // Отображение предустановленных игр в случае ошибки
 function displayDefaultGames() {
-    loadSettings();
-    checkQuestionOfTheDay();
+    switchScreen('firstPage');
+}
+
+export function checkFirstRunAndLoadData() {
+    let acceptPrivacy = localStorage.getItem('acceptPolicy');
+
+    if (acceptPrivacy) {
+        loadSettings();
+        checkQuestionOfTheDay();
+    } else {
+        switchScreen('acceptPage');
+    }
 }
 
 function lockPortraitOrientation() {

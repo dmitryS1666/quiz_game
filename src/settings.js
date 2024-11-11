@@ -60,7 +60,7 @@ function stopMusic() {
 }
 
 function runMusic() {
-    menuMusic.volume = 0.5;
+    menuMusic.volume = 0.6;
 
     if (settings.music && (menuMusic.paused || menuMusic.currentTime === 0)) {
         menuMusic.play();

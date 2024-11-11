@@ -21,26 +21,51 @@ import {
 } from './settings'
 
 import {Browser} from "@capacitor/browser";
+import {checkFirstRunAndLoadData} from "./index";
 
 // читать политику
-document.getElementById('readPrivacyPolicy').addEventListener('click', async () => {
-    await tapSound.play();
+document.getElementById('readPrivacyPolicy').addEventListener('click', () => {
+    clickSound.play();
 
     try {
-        await Browser.open({url: 'https://lucky-quizz.site'});
+        Browser.open({url: 'https://lucky-quizz.site'});
     } catch (e) {
         console.error('Error opening browser:', e);
     }
 });
 // читать политику
-document.getElementById('privacyPolicy').addEventListener('click', async () => {
-    await tapSound.play();
+document.getElementById('privacyBtn').addEventListener('click', () => {
+    clickSound.play();
 
     try {
-        await Browser.open({url: 'https://lucky-quizz.site'});
+        Browser.open({url: 'https://lucky-quizz.site'});
     } catch (e) {
         console.error('Error opening browser:', e);
     }
+});
+// читать политику
+document.getElementById('privacyPolicy').addEventListener('click', () => {
+    clickSound.play();
+
+    try {
+        Browser.open({url: 'https://lucky-quizz.site'});
+    } catch (e) {
+        console.error('Error opening browser:', e);
+    }
+});
+// подтвердить политику
+document.getElementById('acceptPrivacy').addEventListener('click', () => {
+    clickSound.play();
+    localStorage.setItem('acceptPolicy', true);
+    vibrate(100);
+    switchScreen('progressPage');
+});
+// play game
+document.getElementById('playBtn').addEventListener('click', () => {
+    clickSound.play();
+    vibrate(100);
+    checkFirstRunAndLoadData();
+    // switchScreen('progressPage');
 });
 // reset game
 document.getElementById('resetGame').addEventListener('click', () => {
@@ -60,7 +85,7 @@ document.getElementById('resetGame').addEventListener('click', () => {
 document.getElementById('okSettings').addEventListener('click', () => {
     clickSound.play();
     vibrate(100);
-    switchScreen('progressPage');
+    switchScreen('firstPage');
 });
 document.getElementById('toggle-music').addEventListener('click', () => {
     clickSound.play();
@@ -82,7 +107,7 @@ document.getElementById('continueFail').addEventListener('click', () => {
 document.getElementById('close_btn').addEventListener('click', () => {
     clickSound.play();
     vibrate(100);
-    switchScreen('progressPage'); // Переход к экрану основных вопросов
+    switchScreen('firstPage');
 });
 
 // HITS
@@ -139,6 +164,14 @@ document.getElementById('useExtraPoints').addEventListener('click', () => {
 });
 
 document.getElementById('settingsButton').addEventListener('click', () => {
+    clickSound.play();
+    vibrate(100);
+
+    clearInterval(timer); // Очищаем таймер при выборе ответа
+    switchScreen('settings'); // Переход к экрану основных вопросов
+});
+
+document.getElementById('settingBtn').addEventListener('click', () => {
     clickSound.play();
     vibrate(100);
 

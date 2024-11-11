@@ -73,10 +73,44 @@ html, body {
 
 #character {
     position: absolute;
-    bottom: 0;
+    bottom: -10px;
 }
 
 #character img {
+    width: 100%;
+}
+
+#playBtn, #privacyBtn, #settingBtn {
+    position: absolute;
+    width: 80%;
+    height: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 50px;
+    border: none;
+    background: none;
+}
+
+#privacyBtn {
+    width: 40%;
+    left: 25px;
+    bottom: 10px;
+    top: 85%;
+    z-index: 1;
+    transform: none;
+}
+
+#settingBtn {
+    width: 40%;
+    right: 25px;
+    bottom: 10px;
+    top: 85%;
+    z-index: 1;
+    left: unset;
+    transform: none;
+}
+
+#playBtn img, #privacyBtn img, #settingBtn img {
     width: 100%;
 }
 
@@ -277,6 +311,10 @@ html, body {
     left: 50%;
     margin-top: 15%;
     background: #fd3a991f;
+}
+
+.privacy {
+    height: 35vh;
 }
 
 .canva .title {
@@ -639,7 +677,7 @@ html, body {
 #questionGame .questionBody .answers .item .text {
     text-align: left;
     padding-left: 20px;
-    padding-top: 20px;
+    padding-top: 24px;
     font-size: 18px;
 }
 
@@ -889,6 +927,15 @@ html, body {
     font-weight: bold;
     margin-top: 90px;
     float: left;
+}
+
+.main_game {
+    /*position: absolute !important;*/
+    top: 70% !important;
+    left: 5% !important;
+    width: 90% !important;
+    height: 80px !important;
+    font-size: 24px;
 }
 /*------------------OFFER WALL------------------------*/
 
