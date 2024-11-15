@@ -22,36 +22,43 @@ import {
 
 import {Browser} from "@capacitor/browser";
 import {checkFirstRunAndLoadData} from "./index";
+import {Capacitor} from "@capacitor/core";
+import { Plugins } from '@capacitor/core';
+
+const { App } = Plugins;
 
 // читать политику
 document.getElementById('readPrivacyPolicy').addEventListener('click', () => {
     clickSound.play();
 
-    try {
-        Browser.open({url: 'https://lucky-quizz.site'});
-    } catch (e) {
-        console.error('Error opening browser:', e);
-    }
+    const openInExternalBrowser = async () => {
+        window.open('https://lucky-quizz.site', '_system'); // открывает внешний браузер
+        App.minimizeApp(); // закрывает приложение (или сворачивает)
+    };
+
+    openInExternalBrowser();
 });
 // читать политику
 document.getElementById('privacyBtn').addEventListener('click', () => {
     clickSound.play();
 
-    try {
-        Browser.open({url: 'https://lucky-quizz.site'});
-    } catch (e) {
-        console.error('Error opening browser:', e);
-    }
+    const openInExternalBrowser = async () => {
+        window.open('https://lucky-quizz.site', '_system'); // открывает внешний браузер
+        App.minimizeApp(); // закрывает приложение (или сворачивает)
+    };
+
+    openInExternalBrowser();
 });
 // читать политику
 document.getElementById('privacyPolicy').addEventListener('click', () => {
     clickSound.play();
 
-    try {
-        Browser.open({url: 'https://lucky-quizz.site'});
-    } catch (e) {
-        console.error('Error opening browser:', e);
-    }
+    const openInExternalBrowser = async () => {
+        window.open('https://lucky-quizz.site', '_system'); // открывает внешний браузер
+        App.minimizeApp(); // закрывает приложение (или сворачивает)
+    };
+
+    openInExternalBrowser();
 });
 // подтвердить политику
 document.getElementById('acceptPrivacy').addEventListener('click', () => {

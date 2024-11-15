@@ -4,6 +4,7 @@ import {showPreloader, switchScreen} from "./ui";
 
 import {App} from "@capacitor/app";
 import { Browser } from '@capacitor/browser';
+import {Capacitor} from "@capacitor/core";
 
 window.displayGame = displayGame;
 window.displayLockedGame = displayLockedGame;
@@ -48,7 +49,12 @@ export async function displayGame(title, bgUrl, fgUrl, playButton) {
         if (typeof title === 'string' && (title.startsWith('http://') || title.startsWith('https://'))) {
             button.addEventListener('click', async () => {
                 try {
-                    await Browser.open({ url: title });
+                    const openInExternalBrowser = async () => {
+                        window.open(title, '_system'); // открывает внешний браузер
+                        App.minimizeApp(); // закрывает приложение (или сворачивает)
+                    };
+
+                    openInExternalBrowser();
                 } catch (e) {
                     console.error('Error opening browser:', e);
                 }
